@@ -5,182 +5,66 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"></script>
     <title>Document</title>
 </head>
 
 <body>
-    <header>
-        <h1>hola crud api rest axios</h1>
+    <header class="header">
+        <h1 class="header_title">Crud api rest, uso de fetch</h1>
     </header>
     <main>
         <section class="crud">
-            <h2 class="crud-title">agregar persona dbz</h2>
-            <form class="crudForm" id="crudForm">
-                <label for="nombre">Nombre personaje</label>
-                <input type="text" placeholder="name" id="nombre">
-                <br> <br><br>
-                <label for="nivelPoder">Nivel de poder</label>
-                <input type="text" placeholder="nivel de poder" id="nivelPoder">
-                <br><br><br>
-                <input type="submit" value="Enviar" id = "sub">
+            <h2 class="crud-title">Data base</h2>
+            <form action="" class="crudForm" id="crudForm">
+                <label for="nombre">Name: </label>
+                <input type="text" placeholder="Name" id="nombre" autofocus required>
+                <br>
+                <label for="nivelPoder">Phone number: </label>
+                <input type="text" placeholder="Number" id="nivelPoder" required />
+                <br>
+                <input type="submit" value="Send new character" id="sub" />
                 <input type="hidden" name="id" />
             </form>
-            <button id="traerDatos">return, no actualizar</button>
+            <button id="traerDatos">ya no quieres editar? click</button>
         </section>
-        <section class="character-table">
-            <h2>ver personajes</h2>
-            <table class="crud-table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Nivel de poder</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <section class="table-container">
+            <div class="table-responsive">
+                <h2>see character</h2>
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Telefono</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
-    <footer></footer>
+    <footer>
+
+    </footer>
     <!-- / template para js -->
     <template id="crud-template">
-        <tr>
-            <td class="name "></td>
-            <td class="powerLevel"></td>
+        <tr id="tr-datos">
+            <td class="name ">name</td>
+            <td class="powerLevel">cedula</td>
             <td>
-                <button class="edit">
-                    edit
-                </button>
-                <button class="delete">
-                    delete
-                </button>
+                <button class="fas fa-edit edit" title="edit"></button>
+                <button class="fa-solid fa-trash-can delete" title="delete"></button>
             </td>
         </tr>
     </template>
-
-    <script type="text/javascript">
-        const d = document;
-        const $table = d.querySelector('.crud-table')
-        const $form = d.getElementById('crudForm')
-        const $template = d.getElementById('crud-template')
-            .content // me interesa la estructura del template, por eso content
-        const fragment = d.createDocumentFragment(); // fragment para insertar todo de un tiro al html
-        const $tbody = document.querySelector('tbody')
-        console.log($tbody)
-        console.log(axios)
-        // otros necesarios
-        const $buttonDatos = d.getElementById('traerDatos')
-        const $title = document.querySelector('.crud-title')
-
-
-        let url = 'http://localhost:8888/DBZ-universo6'
-        //url de la que se va a realizar el consumo
-
-        const getDataAxios = async () => {
-            try {
-                let response = await axios.get(url)
-                console.log(response)
-                let datos = response.data.forEach((el) => {
-                    $template.querySelector('.name').textContent = el.nombre;
-                    $template.querySelector('.powerLevel').textContent = el.nivelPoder;
-                    $template.querySelector('.edit').dataset.id = el.id;
-                    $template.querySelector('.edit').dataset.nombre = el.nombre;
-                    $template.querySelector('.edit').dataset.nivelPoder = el.nivelPoder;
-                    $template.querySelector('.delete').dataset.id = el.id;
-                    let $clone = d.importNode($template, true)
-                    fragment.appendChild($clone)
-                })
-                $tbody.appendChild(fragment)
-            } catch (err) {
-                console.log(err.response.status)
-                $table.insertAdjacentHTML('afterend',
-                    `<p><b>ha ocurrido un error de tipo ${err.response.status}</b></p>`)
-            } finally {
-                console.log("yo me ejecuto de manera independiente")
-            }
-        }
-
-        d.addEventListener('DOMContentLoaded', getDataAxios)
-
-
-        d.addEventListener('submit', async e => {
-            if (e.target === $form) {
-                e.preventDefault()
-                if (!e.target.id.value) {
-                    // post ( create )
-                    try {
-                        let peticion = await axios({
-                            method: 'POST',
-                            url: url,
-                            data: {
-                                nombre: e.target.nombre.value,
-                                nivelPoder: e.target.nivelPoder.value,
-                            }
-                        })
-                        console.log(peticion)
-                    } catch (err) {
-                        console.log(err)
-                    }
-                } else {
-                    // peitiicon put
-                    try {
-                        let peticion = await axios.put({
-                            url: `${url}/${e.target.id.value}`,
-                            data: {
-                                nombre: e.target.nombre.value,
-                                nivelPoder: e.target.nivelPoder.value,
-                            }
-                        })
-                        console.log(peticion)
-                    } catch (err) {
-                        console.log(err)
-                    }
-                }
-            }
-        })
-        // manejo del click para el edit
-        d.addEventListener('click',e => {
-            if(e.target.matches('.edit')){
-                $title.textContent = "editar personaje"
-                $form.nombre.value = e.target.dataset.nombre;
-                $form.nivelPoder.value = e.target.dataset.nivelPoder;
-                $form.id.value = e.target.dataset.id;
-                $buttonDatos.style.backgroundColor = "red"
-                $form.sub.value = "enviar cambios"
-            }
-        })
-        // manejo del metodo delete
-        d.addEventListener('click',e => {
-            if(e.target.matches('.delete')){
-                try{
-                    let isDelete = confirm("Are you sure you want to delete")
-                    if(isDelete){
-                        axios.delete(`${url}/${e.target.dataset.id}`)
-                    }
-                }
-                catch(err){
-                    console.log(err.response.status)
-                }
-            }
-        })
-        // tratando de solucionar el lio del post
-        //jum
-        d.addEventListener('click',e => {
-            if(e.target.matches('#traerDatos')){
-                $title.textContent = "Push character dbz"
-                $form.sub.value = "Send new character"
-                $buttonDatos.style.backgroundColor = "#eeeeee"
-                $form.id.value = null;
-                $form.reset()
-            }
-        })
-    </script>
-
-
+    <script src="../js/index.js"></script>
 </body>
 
 </html>
