@@ -1,0 +1,94 @@
+
+:root {
+    --color-delete : red;
+    --color-edit: #cccc00;
+    --color-neutro : #fff;
+  }
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: Helvetica, Arial, sans-serif;
+    scroll-behavior: smooth;
+}
+html{
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+body{
+    text-align: center;
+}
+/*diseños para el header*/
+h1{
+    margin: 45px auto;
+    color: red;
+}
+/*diseños elementos del main*/
+form{
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    max-width: 400px;
+    text-align: center;
+}
+#traerDatos{
+    margin: auto;
+    color : var(--color-neutro);
+    display: none;
+    padding: 7px;
+}
+#sub{
+    margin: auto;
+    width: 60%;
+    padding: 5px;
+}
+.table-container{
+    margin: 40px auto;
+}
+table{
+    margin: 30px auto;
+    width: 100%;
+    max-width: 600px;
+}
+td{
+    border: 1px solid black;
+    padding: 4px;
+}
+.delete,.edit{
+    background-color: var(--color-neutro);
+    border: none;
+
+}
+.delete{
+    color: var(--color-delete);
+}
+.edit{
+    color: var(--color-edit);
+}
+
+/*para uso de la tabla de manera mas adecuada, siguen siendo elementos del main*/
+
+ .table-responsive {
+    min-height: .1%;
+    overflow-x: auto;
+}
+
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        width: 99%;
+        margin: 15px auto;
+        overflow-y: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+        white-space: nowrap;
+    }
+}
